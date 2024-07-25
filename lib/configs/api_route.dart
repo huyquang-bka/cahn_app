@@ -1,7 +1,3 @@
-//Main HOST
-String baseUrl = "http://192.168.1.210:42013";
-
-//URI
 //GET
 String uriGetEvent = "/Service/api/viewPersonEvent";
 String uriGetCamera = "/Service/api/Device";
@@ -26,18 +22,3 @@ Map<String, String> bodyRefreshToken = {
   "client_secret": "b0udcdl8k80cqiyt63uq",
   "refresh_token": "",
 };
-
-//URL
-
-//AUTH
-String urlAuth = "$baseUrl$uriAuth";
-
-//DATA
-String urlGetEvent = "$baseUrl$uriGetEvent";
-String urlGetCamera = "$baseUrl$uriGetCamera";
-String urlGetArea = "$baseUrl$uriGetArea";
-String urlGetCameraFunction = "$baseUrl$uriGetCameraFunction";
-String urlGetBlackList = "$baseUrl$uriGetBlackList";
-
-//FILE SERVICE
-String urlFileService = "$baseUrl/Service/files";

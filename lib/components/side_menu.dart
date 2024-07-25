@@ -1,8 +1,8 @@
 import 'package:cahn_app/configs/config.dart';
 import 'package:cahn_app/configs/theme.dart';
-import 'package:cahn_app/pages/side/dashboard.dart';
-import 'package:cahn_app/pages/side/event.dart';
-import 'package:cahn_app/pages/side/live_view.dart';
+import 'package:cahn_app/pages/screen/register/register.dart';
+import 'package:cahn_app/pages/screen/event/event.dart';
+import 'package:cahn_app/pages/screen/live/live_view.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,9 +17,9 @@ class SideMenu extends StatefulWidget {
 class _SideMenuState extends State<SideMenu> {
   int _selectedIndex = 0;
   final Map<int, dynamic> _screens = {
-    0 : [const DashBoardScreen(), 'Dashboard', Icons.dashboard],
+    0 : [const LiveViewScreen(), 'Live View', Icons.live_tv],
     1 : [const EventScreen(), 'Events', Icons.event],
-    2 : [const LiveViewScreen(), 'Live View', Icons.live_tv],
+    2 : [const RegisterScreen(), 'Register', Icons.person_add],
   };
 
   void _onTap(int index) {
@@ -56,9 +56,11 @@ class _SideMenuState extends State<SideMenu> {
                 ),
               const Spacer(),
               // logout button
-              sideMenuTile(
-                icon: const Icon(Icons.logout),
-                title: 'Logout',
+              ListTile(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+                leading: const Icon(Icons.logout),
+                title: Text('Logout', style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: defaultTextSize)),
                 onTap: _onLogout,
               ),
             ],
@@ -66,15 +68,19 @@ class _SideMenuState extends State<SideMenu> {
     );
 }
 
-  ListTile sideMenuTile({Icon? icon, String title="?", Function()? onTap, bool isSelected = false}) {
-    return ListTile(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10)),
-      leading: icon,
-      title: Text(title, style: const TextStyle(color: Colors.white, fontSize: defaultTextSize)),
-      onTap: onTap,
-      selected: isSelected,
-      selectedTileColor: Theme.of(context).colorScheme.primary,
+  Container sideMenuTile({Icon? icon, String title="?", Function()? onTap, bool isSelected = false}) {
+    return Container(
+      decoration: BoxDecoration(
+        color: isSelected ? Colors.white30 : Colors.transparent,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: ListTile(
+        leading: icon,
+        iconColor: Colors.white,
+        title: Text(title, style: TextStyle(color: Colors.white, fontSize: defaultTextSize, fontWeight: isSelected ? FontWeight.bold : FontWeight.normal)),
+        onTap: onTap,
+        selected: isSelected,
+      ),
     );
   }
 }

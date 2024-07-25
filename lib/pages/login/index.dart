@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:cahn_app/models/auth.dart';
+import 'package:cahn_app/models/config.dart';
+import 'package:flutter/services.dart';
 import '../../configs/api_route.dart';
 import '../../configs/config.dart';
 import '../../helpers/helpers_builder.dart';
@@ -17,8 +19,21 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool _passwordVisible = false;
+  late Config config;
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadConfig();
+  }
+
+  void _loadConfig() async {
+    //load config from json file
+    String jsonString = await rootBundle.loadString('assets/configs/config.json');
+    config = Config.fromString(jsonString);
+  }
 
   void _onVisibilityChanged() {
     setState(() {
@@ -44,13 +59,12 @@ class _LoginPageState extends State<LoginPage> {
       showAlertMessage(context: context, message: 'Please fill in all fields');
       return;
     } 
+    String urlAuth = '${config.baseUrl}$uriAuth';
     Map<String, String> payload = bodyAuth;
     payload["username"] = _usernameController.text;
     payload["password"] = _passwordController.text;
     // call login api
     try{
-      print("urlAuth: $urlAuth");
-      print("payload: ${jsonEncode(payload)}");
       final response = await http
             .post(
               Uri.parse(urlAuth),

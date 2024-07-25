@@ -32,7 +32,7 @@ class AuthPage extends StatelessWidget {
           // Check the authentication state
           final auth = snapshot.data;
           if (auth?.accessToken != null) {
-            return const HomePage();
+            return HomePage(auth: auth!);
           } else {
             return const LoginPage();
           }

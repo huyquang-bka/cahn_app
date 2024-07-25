@@ -1,21 +1,19 @@
 import 'package:cahn_app/components/side_menu.dart';
 import 'package:cahn_app/configs/theme.dart';
 import 'package:cahn_app/models/auth.dart';
-import 'package:cahn_app/models/settings.dart';
-import 'package:cahn_app/pages/side/dashboard.dart';
+import 'package:cahn_app/pages/screen/live/live_view.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({super.key, this.auth});
+  final Auth? auth;
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
-  Auth auth = Auth();
-  Setting setting = Setting();
-  Widget _currentScreen = const DashBoardScreen();
+  Widget _currentScreen = const LiveViewScreen();
 
   @override
   void initState() {
@@ -28,7 +26,6 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     });
   }
 
-  // load settings from shared preferences
   @override
   Widget build(BuildContext context) {
     return Scaffold(

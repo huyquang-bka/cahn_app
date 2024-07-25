@@ -5,8 +5,10 @@ class LiveViewScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Live View'),
+    return Row(
+      children: [
+        
+      ],
     );
   }
 } 

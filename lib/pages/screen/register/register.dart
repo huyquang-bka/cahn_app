@@ -1,8 +1,8 @@
 import 'package:cahn_app/configs/config.dart';
 import 'package:flutter/material.dart';
 
-class DashBoardScreen extends StatelessWidget {
-  const DashBoardScreen({super.key});
+class RegisterScreen extends StatelessWidget {
+  const RegisterScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
