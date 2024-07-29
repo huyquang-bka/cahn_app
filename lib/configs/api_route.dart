@@ -1,9 +1,7 @@
 //GET
-String uriGetEvent = "/Service/api/viewPersonEvent";
-String uriGetCamera = "/Service/api/Device";
-String uriGetArea = "/Service/api/areas";
-String uriGetCameraFunction = "/api/v1/camera-function";
-String uriGetBlackList = "/api/v1/plate-in-blacklist";
+String uriGetEvent = "/Service/api/lookup/personEvent";
+String uriGetCamera = "/Service/api/lookup/device";
+String uriGetArea = "/Service/api/lookup/area";
 
 //POST
 //auth

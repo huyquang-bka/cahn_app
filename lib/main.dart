@@ -1,5 +1,6 @@
 import 'package:cahn_app/configs/theme.dart';
 import 'package:cahn_app/pages/auth/index.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'pages/home/index.dart';
 import 'pages/login/index.dart';
 import 'package:flutter/material.dart';
@@ -31,4 +32,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

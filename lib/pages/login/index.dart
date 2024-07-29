@@ -30,9 +30,9 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _loadConfig() async {
-    //load config from json file
-    String jsonString = await rootBundle.loadString('assets/configs/config.json');
-    config = Config.fromString(jsonString);
+    //set config to shared preferences
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    config = Config.fromString(prefs.getString('config'));
   }
 
   void _onVisibilityChanged() {

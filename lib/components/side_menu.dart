@@ -1,14 +1,11 @@
 import 'package:cahn_app/configs/config.dart';
 import 'package:cahn_app/configs/theme.dart';
-import 'package:cahn_app/pages/screen/register/register.dart';
-import 'package:cahn_app/pages/screen/event/event.dart';
-import 'package:cahn_app/pages/screen/live/live_view.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SideMenu extends StatefulWidget {
   const SideMenu({super.key, this.onTap});
-  final Function(Widget)? onTap;
+  final Function(int)? onTap;
 
   @override
   State<SideMenu> createState() => _SideMenuState();
@@ -17,22 +14,25 @@ class SideMenu extends StatefulWidget {
 class _SideMenuState extends State<SideMenu> {
   int _selectedIndex = 0;
   final Map<int, dynamic> _screens = {
-    0 : [const LiveViewScreen(), 'Live View', Icons.live_tv],
-    1 : [const EventScreen(), 'Events', Icons.event],
-    2 : [const RegisterScreen(), 'Register', Icons.person_add],
+    0 : ['Live View', Icons.live_tv],
+    1 : ['Events', Icons.event],
+    2 : ['Register', Icons.person_add],
   };
 
   void _onTap(int index) {
     setState(() {
       _selectedIndex = index;
-      widget.onTap!(_screens[index][0]);
+      widget.onTap!(index);
     });
   }
 
   void _onLogout() {
     // logout user
     SharedPreferences.getInstance().then((prefs) {
-      prefs.remove('auth');
+      prefs.remove('access_token');
+      prefs.remove('refresh_token');
+      prefs.remove('companyId');
+      // navigate to login page
       Navigator.pushReplacementNamed(context, '/login');
     });
   }
@@ -49,8 +49,8 @@ class _SideMenuState extends State<SideMenu> {
               // side menu tiles
               for (int i = 0; i < _screens.length; i++)
                 sideMenuTile(
-                  icon: Icon(_screens[i][2]),
-                  title: _screens[i][1],
+                  icon: Icon(_screens[i][1]),
+                  title: _screens[i][0],
                   onTap: () => _onTap(i),
                   isSelected: _selectedIndex == i,
                 ),

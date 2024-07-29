@@ -1,69 +1,105 @@
 import 'dart:convert';
 
 class Camera {
-  int id;
-  String deviceName;
-  String rstpLink;
-  int deviceType;
-  int compId;
-  String lstFeature;
-  List<int> listFeature;
-  String url;
-  List<dynamic>? listPolygon;
+  String id;
+  String value;
+  String text;
+  int filterId;
+  String? code;
   bool isDelete;
-  dynamic polygon;
-  String areaCode;
-  String deviceCode;
+  int compId;
+  int? companyId;
+  dynamic courseStatus;
+  dynamic deptStatus;
+  int status;
+  dynamic isDeleted;
+  int areaId;
+  dynamic areaType;
+  dynamic deptId;
+  dynamic fieldId;
+  dynamic positionId;
+  dynamic fillterDate;
+  dynamic startDate;
+  dynamic endDate;
+  String? deviceCode;
+  String? areaCode;
 
   Camera({
     required this.id,
-    required this.deviceName,
-    required this.rstpLink,
-    required this.deviceType,
-    required this.compId,
-    required this.lstFeature,
-    required this.listFeature,
-    required this.url,
-    this.listPolygon,
+    required this.value,
+    required this.text,
+    required this.filterId,
+    this.code,
     required this.isDelete,
-    this.polygon,
-    required this.areaCode,
-    required this.deviceCode,
+    required this.compId,
+    this.companyId,
+    this.courseStatus,
+    this.deptStatus,
+    required this.status,
+    this.isDeleted,
+    required this.areaId,
+    this.areaType,
+    this.deptId,
+    this.fieldId,
+    this.positionId,
+    this.fillterDate,
+    this.startDate,
+    this.endDate,
+    this.deviceCode,
+    this.areaCode,
   });
 
   factory Camera.fromJson(Map<String, dynamic> json) {
     return Camera(
       id: json['id'],
-      deviceName: json['deviceName'],
-      rstpLink: json['rstpLink'],
-      deviceType: json['deviceType'],
-      compId: json['compId'],
-      lstFeature: json['lstFeature'],
-      listFeature: List<int>.from(json['listFeature']),
-      url: json['url'],
-      listPolygon: json['listPolygon'],
+      value: json['value'],
+      text: json['text'],
+      filterId: json['filterId'],
+      code: json['code'],
       isDelete: json['isDelete'],
-      polygon: json['polygon'],
-      areaCode: json['areaCode'],
+      compId: json['compId'],
+      companyId: json['companyId'],
+      courseStatus: json['courseStatus'],
+      deptStatus: json['deptStatus'],
+      status: json['status'],
+      isDeleted: json['isDeleted'],
+      areaId: json['areaId'],
+      areaType: json['areaType'],
+      deptId: json['deptId'],
+      fieldId: json['fieldId'],
+      positionId: json['positionId'],
+      fillterDate: json['fillterDate'],
+      startDate: json['startDate'],
+      endDate: json['endDate'],
       deviceCode: json['deviceCode'],
+      areaCode: json['areaCode'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'deviceName': deviceName,
-      'rstpLink': rstpLink,
-      'deviceType': deviceType,
-      'compId': compId,
-      'lstFeature': lstFeature,
-      'listFeature': listFeature,
-      'url': url,
-      'listPolygon': listPolygon,
+      'value': value,
+      'text': text,
+      'filterId': filterId,
+      'code': code,
       'isDelete': isDelete,
-      'polygon': polygon,
-      'areaCode': areaCode,
+      'compId': compId,
+      'companyId': companyId,
+      'courseStatus': courseStatus,
+      'deptStatus': deptStatus,
+      'status': status,
+      'isDeleted': isDeleted,
+      'areaId': areaId,
+      'areaType': areaType,
+      'deptId': deptId,
+      'fieldId': fieldId,
+      'positionId': positionId,
+      'fillterDate': fillterDate,
+      'startDate': startDate,
+      'endDate': endDate,
       'deviceCode': deviceCode,
+      'areaCode': areaCode,
     };
   }
 
@@ -72,8 +108,8 @@ class Camera {
     return data.map((item) => Camera.fromJson(item)).toList();
   }
 
-  static String listToJson(List<Camera> cameras) {
-    final data = cameras.map((camera) => camera.toJson()).toList();
+  static String listToJson(List<Camera> areas) {
+    final data = areas.map((area) => area.toJson()).toList();
     return json.encode(data);
   }
 }

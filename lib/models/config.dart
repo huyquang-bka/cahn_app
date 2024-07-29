@@ -20,4 +20,8 @@ class Config {
       'baseUrl': baseUrl,
     };
   }
+
+  String encodeToString() {
+    return jsonEncode(toJson());
+  }
 }

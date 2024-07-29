@@ -1,18 +1,23 @@
 import 'package:cahn_app/components/side_menu.dart';
 import 'package:cahn_app/configs/theme.dart';
-import 'package:cahn_app/models/auth.dart';
+import 'package:cahn_app/pages/screen/event/event.dart';
 import 'package:cahn_app/pages/screen/live/live_view.dart';
+import 'package:cahn_app/pages/screen/register/register.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key, this.auth});
-  final Auth? auth;
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
+  final List<Widget> _screens = [
+        const LiveViewScreen(),
+        const EventScreen(),
+        const RegisterScreen(),
+      ];
   Widget _currentScreen = const LiveViewScreen();
 
   @override
@@ -20,9 +25,9 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     super.initState();
   }
 
-  void _onSideMenuTap(Widget screen) {
+  void _onSideMenuTap(int currentIndex) {
     setState(() {
-      _currentScreen = screen;
+      _currentScreen = _screens[currentIndex];
     });
   }
 
@@ -38,7 +43,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
           ),
           Expanded(
             flex: 5,
-            child: _currentScreen
+            child: _currentScreen,
           ),
         ],),
       ),

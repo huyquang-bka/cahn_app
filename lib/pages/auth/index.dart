@@ -2,21 +2,24 @@ import 'package:cahn_app/models/auth.dart';
 import 'package:cahn_app/pages/home/index.dart';
 import 'package:cahn_app/pages/login/index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthPage extends StatelessWidget {
   const AuthPage({super.key});
 
-  Future<Auth?> _loadAccount() async {
+  Future<Auth?> _loadAccountAndConfig() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? authPref = prefs.getString('auth');
+    String jsonString = await rootBundle.loadString('assets/configs/config.json');
+    prefs.setString('config', jsonString);
     return Auth.fromString(authPref);
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Auth?>(
-      future: _loadAccount(),
+      future: _loadAccountAndConfig(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // Show a loading indicator while the future is being resolved
@@ -32,7 +35,7 @@ class AuthPage extends StatelessWidget {
           // Check the authentication state
           final auth = snapshot.data;
           if (auth?.accessToken != null) {
-            return HomePage(auth: auth!);
+            return const HomePage();
           } else {
             return const LoginPage();
           }

@@ -9,8 +9,10 @@ class Auth {
   final int? companyId;
   final int? userId;
   final String? company;
+  final String? username;
+  final String? password;
 
-  Auth({this.accessToken, this.refreshToken, this.fullName, this.companyId, this.userId, this.company});
+  Auth({this.accessToken, this.refreshToken, this.fullName, this.companyId, this.userId, this.company, this.username, this.password});
 
   factory Auth.fromJson(Map<String, dynamic> json) {
     return Auth(
@@ -47,5 +49,16 @@ class Auth {
     SharedPreferences.getInstance().then((prefs) {
       prefs.remove('auth');
     });
+  }
+  
+  Map<String, String> payloadSignIn()
+  {
+    return {
+      "username": username!,
+      "password": password!,
+      "grant_type": "password",
+      "client_id": "HVQP_Cloud",
+      "client_secret": "1a82f1d60ba6353bb64a8fb4b05e4bc4"
+    };
   }
 }
