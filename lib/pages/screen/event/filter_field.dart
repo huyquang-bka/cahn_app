@@ -55,7 +55,7 @@ class _FilterFieldState extends State<FilterField> {
               }),
               const SizedBox(height: 16),
               // camera
-              DropDownFilter(title: "Camera", items: widget.cameras),
+              DropDownFilter(title: "Camera   ", items: widget.cameras),
             ],
           )
         ],
