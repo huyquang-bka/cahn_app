@@ -1,7 +1,5 @@
 import 'dart:convert';
-
 import 'package:cahn_app/configs/api_route.dart';
-import 'package:cahn_app/configs/config.dart';
 import 'package:cahn_app/models/config.dart';
 import 'package:cahn_app/networks/http.dart';
 import 'package:cahn_app/pages/screen/event/event_field.dart';
