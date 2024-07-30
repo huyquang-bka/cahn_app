@@ -6,17 +6,64 @@ import 'package:flutter/material.dart';
 import 'package:cahn_app/models/area.dart';
 import 'package:cahn_app/models/camera.dart';
 
+
 class FilterField extends StatefulWidget {
   const FilterField({super.key, required this.areas, required this.cameras, this.onSearch});
   final List<Area> areas;
   final List<Camera> cameras;
-  final Function()? onSearch;
+  final Function(String)? onSearch;
 
   @override
   State<FilterField> createState() => _FilterFieldState();
 }
 
 class _FilterFieldState extends State<FilterField> {
+  String? startTime;
+  String? endTime;
+  Area? selectedArea;
+  Camera? selectedCamera;
+  bool reset = false;
+
+  void onStartTimeChanged(String dateTime) {
+    startTime = dateTime;
+  }
+
+  void onEndTimeChanged(String dateTime) {
+    endTime = dateTime;
+  }
+
+  void onAreaChanged(Area value) {
+    selectedArea = value;
+  }
+
+  void onCameraChanged(Camera value) {
+    selectedCamera = value;
+  }
+
+  void onSearchPressed() {
+    String filterString = "";
+    filterString += startTime != null ? "startTime=$startTime&" : "";
+    filterString += endTime != null ? "endTime=$endTime&" : "";
+    filterString += selectedArea != null ? "areaId=${selectedArea?.id}&" : "";
+    filterString += selectedCamera != null ? "deviceId=${selectedCamera?.id}&" : "";
+    print("Filter string: $filterString");
+  }
+
+  void onResetPressed() {
+    setState(() {
+      startTime = null;
+      endTime = null;
+      selectedArea = null;
+      selectedCamera = null;
+      reset = true;
+    });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        reset = false;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -37,12 +84,12 @@ class _FilterFieldState extends State<FilterField> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // start time
-              CustomDateTimePicker(title: "Từ ngày", onChanged: (DateTime dateTime) {
-                print("Start time: $dateTime");
-              }),
+              CustomDateTimePicker(title: "Từ ngày", onChanged: onStartTimeChanged, reset: reset),
               const SizedBox(height: 16),
               // area
-              DropDownFilter(title: "Khu vực", items: widget.areas),
+              DropDownFilter(title: "Khu vực", items: widget.areas, onChanged: (dynamic value) {
+                onAreaChanged(value);
+              }, reset: reset),
             ],
           ),
           const SizedBox(height: 16),
@@ -50,12 +97,12 @@ class _FilterFieldState extends State<FilterField> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // end time
-              CustomDateTimePicker(title: "Đến ngày", onChanged: (DateTime dateTime) {
-                print("End time: $dateTime");
-              }),
+              CustomDateTimePicker(title: "Đến ngày", onChanged: onEndTimeChanged, reset: reset),
               const SizedBox(height: 16),
               // camera
-              DropDownFilter(title: "Camera   ", items: widget.cameras),
+              DropDownFilter(title: "Camera   ", items: widget.cameras, onChanged: (dynamic value) {
+                onCameraChanged(value);
+              }, reset: reset),
             ],
           )
         ],
@@ -68,7 +115,7 @@ class _FilterFieldState extends State<FilterField> {
           // search button
           ElevatedButton(
             style: ElevatedButton.styleFrom(backgroundColor: primaryColor),
-            onPressed: widget.onSearch,
+            onPressed: onSearchPressed,
             child: const Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -81,9 +128,7 @@ class _FilterFieldState extends State<FilterField> {
           // reset button
           ElevatedButton(
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            onPressed: () {
-              print("Resetting...");
-            },
+            onPressed: onResetPressed,
             child: const Row(
               mainAxisSize: MainAxisSize.min,
               children: [

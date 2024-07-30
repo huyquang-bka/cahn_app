@@ -1,18 +1,18 @@
 class Area {
-  final String id;
-  final String value;
-  final String text;
-  final int filterId;
-  final String code;
-  final bool isDelete;
-  final int compId;
+  final String? id;
+  final String? value;
+  final String? text;
+  final int? filterId;
+  final String? code;
+  final bool? isDelete;
+  final int? compId;
   final int? companyId;
   final int? courseStatus;
   final int? deptStatus;
-  final int status;
+  final int? status;
   final bool? isDeleted;
-  final int areaId;
-  final int areaType;
+  final int? areaId;
+  final int? areaType;
   final int? deptId;
   final int? fieldId;
   final int? positionId;
@@ -23,20 +23,20 @@ class Area {
   final String? areaCode;
 
   Area({
-    required this.id,
-    required this.value,
-    required this.text,
-    required this.filterId,
-    required this.code,
-    required this.isDelete,
-    required this.compId,
+    this.id,
+    this.value,
+    this.text,
+    this.filterId,
+    this.code,
+    this.isDelete,
+    this.compId,
     this.companyId,
     this.courseStatus,
     this.deptStatus,
-    required this.status,
+    this.status,
     this.isDeleted,
-    required this.areaId,
-    required this.areaType,
+    this.areaId,
+    this.areaType,
     this.deptId,
     this.fieldId,
     this.positionId,

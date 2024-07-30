@@ -78,6 +78,8 @@ class _LoginPageState extends State<LoginPage> {
       if (response.statusCode == 200) {
         final body = jsonDecode(response.body);
         Auth auth = Auth.fromJson(body);
+        auth.username = _usernameController.text;
+        auth.password = _passwordController.text;
         // save access token to shared preferences
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString('auth', auth.encodeToString());

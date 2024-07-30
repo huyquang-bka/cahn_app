@@ -23,14 +23,16 @@ class CustomHttpClient {
 
   Future<http.Response> get(String endpoint) async {
     final response = await _getRequestWithToken(endpoint);
-
     if (response.statusCode == 401) {
       // Token expired, try to refresh it
       final refreshResponse = await _getNewTokenRequest();
       if (refreshResponse.statusCode == 200) {
         final body = jsonDecode(refreshResponse.body);
+        Auth newAuth = Auth.fromJson(body);
+        newAuth.username = _auth?.username;
+        newAuth.password = _auth?.password;
+        _auth = newAuth;
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        _auth = Auth.fromJson(body);
         prefs.setString('auth', jsonEncode(_auth));
         // Retry the original request with the new token
         return _getRequestWithToken(endpoint);
@@ -47,8 +49,11 @@ class CustomHttpClient {
       final refreshResponse = await _getNewTokenRequest();
       if (refreshResponse.statusCode == 200) {
         final body = jsonDecode(refreshResponse.body);
+        Auth newAuth = Auth.fromJson(body);
+        newAuth.username = _auth?.username;
+        newAuth.password = _auth?.password;
+        _auth = newAuth;
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        _auth = Auth.fromJson(body);
         prefs.setString('auth', jsonEncode(_auth));
         // Retry the original request with the new token
         return _postRequestWithToken(endpoint, body);
@@ -62,19 +67,22 @@ class CustomHttpClient {
     final url = Uri.parse(endpoint);
     return http.get(url, headers: {
       'Authorization': 'Bearer ${_auth?.accessToken}',
-    });
+    }).timeout(const Duration(seconds: 5));
   }
 
   Future<http.Response> _postRequestWithToken(String endpoint, Map<String, dynamic> body) {
     final url = Uri.parse(endpoint);
     return http.post(url, body: body, headers: {
       'Authorization': 'Bearer ${_auth?.accessToken}',
-    });
+    }).timeout(const Duration(seconds: 5));
   }
 
   Future<http.Response> _getNewTokenRequest() {
     final url = Uri.parse('${_config?.baseUrl}$uriAuth');
     Map<String, String> payload = _auth!.payloadSignIn();
-    return http.post(url, body: payload);
+    print("Payload _getNewTokenRequest: $payload");
+    return http.post(url, body: jsonEncode(payload), headers: {
+      'Content-Type': 'application/json',
+    }).timeout(const Duration(seconds: 10));
   }
 }

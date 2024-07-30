@@ -9,8 +9,8 @@ class Auth {
   final int? companyId;
   final int? userId;
   final String? company;
-  final String? username;
-  final String? password;
+  String? username;
+  String? password;
 
   Auth({this.accessToken, this.refreshToken, this.fullName, this.companyId, this.userId, this.company, this.username, this.password});
 
@@ -22,6 +22,8 @@ class Auth {
       companyId: json['companyId'],
       userId: json['userId'],
       company: json['company'],
+      username: json['username'],
+      password: json['password'],
     );
   }
 
@@ -37,6 +39,8 @@ class Auth {
       'companyId': companyId,
       'userId': userId,
       'company': company,
+      'username': username,
+      'password': password,
     };
   }
 
@@ -52,7 +56,7 @@ class Auth {
   }
   
   Map<String, String> payloadSignIn()
-  {
+  { 
     return {
       "username": username!,
       "password": password!,

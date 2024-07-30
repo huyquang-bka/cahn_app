@@ -1,5 +1,5 @@
 //GET
-String uriGetEvent = "/Service/api/lookup/personEvent";
+String uriGetEvent = "/Service/api/personEvent";
 String uriGetCamera = "/Service/api/lookup/device";
 String uriGetArea = "/Service/api/lookup/area";
 

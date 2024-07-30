@@ -1,19 +1,19 @@
 import 'dart:convert';
 
 class Camera {
-  String id;
-  String value;
-  String text;
-  int filterId;
+  String? id;
+  String? value;
+  String? text;
+  int? filterId;
   String? code;
-  bool isDelete;
-  int compId;
+  bool? isDelete;
+  int? compId;
   int? companyId;
   dynamic courseStatus;
   dynamic deptStatus;
-  int status;
+  int? status;
   dynamic isDeleted;
-  int areaId;
+  int? areaId;
   dynamic areaType;
   dynamic deptId;
   dynamic fieldId;
@@ -25,19 +25,19 @@ class Camera {
   String? areaCode;
 
   Camera({
-    required this.id,
-    required this.value,
-    required this.text,
-    required this.filterId,
+    this.id,
+    this.value,
+    this.text,
+    this.filterId,
     this.code,
-    required this.isDelete,
-    required this.compId,
+    this.isDelete,
+    this.compId,
     this.companyId,
     this.courseStatus,
     this.deptStatus,
-    required this.status,
+    this.status,
     this.isDeleted,
-    required this.areaId,
+    this.areaId,
     this.areaType,
     this.deptId,
     this.fieldId,
