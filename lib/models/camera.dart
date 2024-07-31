@@ -36,7 +36,7 @@ class Camera {
       deviceCode: json['deviceCode'],
       deviceName: json['deviceName'],
       text: json['deviceName'],
-      rtspLink: json['rtspLink'],
+      rtspLink: json['rstpLink'],
       url: json['url'],
       deviceType: json['deviceType'],
       status: json['status'],
