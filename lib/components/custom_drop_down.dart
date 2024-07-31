@@ -5,7 +5,7 @@ class CustomDropDown extends StatefulWidget {
   const CustomDropDown({super.key, required this.title, required this.items, this.onChanged});
   final String title;
   final List<dynamic> items;
-  final Function(dynamic)? onChanged;
+  final Function(int)? onChanged;
 
   @override
   State<CustomDropDown> createState() => _CustomDropDownState();

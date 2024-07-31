@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:cahn_app/configs/config.dart';
 import 'package:cahn_app/configs/theme.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +8,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 class CameraDropDown extends StatefulWidget {
   final void Function(int) changeNumCamera;
 
-  const CameraDropDown({required this.changeNumCamera});
+  const CameraDropDown({super.key, required this.changeNumCamera});
 
   @override
   _CameraDropDownState createState() => _CameraDropDownState();

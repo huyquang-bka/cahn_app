@@ -2,6 +2,7 @@ import 'package:cahn_app/components/datetime_picker.dart';
 import 'package:cahn_app/components/drop_down_filter.dart';
 import 'package:cahn_app/configs/config.dart';
 import 'package:cahn_app/configs/theme.dart';
+import 'package:cahn_app/helpers/helper_function.dart';
 import 'package:flutter/material.dart';
 import 'package:cahn_app/models/area.dart';
 import 'package:cahn_app/models/camera.dart';
@@ -42,11 +43,12 @@ class _FilterFieldState extends State<FilterField> {
 
   void onSearchPressed() {
     String filterString = "";
-    filterString += startTime != null ? "startTime=$startTime&" : "";
-    filterString += endTime != null ? "endTime=$endTime&" : "";
-    filterString += selectedArea != null ? "areaId=${selectedArea?.id}&" : "";
-    filterString += selectedCamera != null ? "deviceId=${selectedCamera?.id}&" : "";
-    print("Filter string: $filterString");
+    filterString += startTime != null ? "DateFrom=${convertDateToUrlEncoded(startTime!)}&" : "";
+    filterString += endTime != null ? "DateTo=${convertDateToUrlEncoded(endTime!)}&" : "";
+    filterString += (selectedArea != null && selectedArea!.id != null) ? "areaId=${selectedArea?.id}&" : "";
+    filterString += (selectedCamera != null && selectedCamera!.id != null) ? "deviceId=${selectedCamera?.id}&" : "";
+    print(filterString);
+    widget.onSearch!(filterString);
   }
 
   void onResetPressed() {

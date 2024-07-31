@@ -23,9 +23,9 @@ class _LiveViewScreenState extends State<LiveViewScreen> {
     return Row(
       children: [
         // camera field
-        Expanded(
+        const Expanded(
           flex: 5,
-          child: CameraField(numCamera: numCamera),
+          child: CameraField(),
           ),
         //event live field
         Expanded(

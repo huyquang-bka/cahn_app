@@ -2,11 +2,12 @@ import 'package:cahn_app/configs/theme.dart';
 import 'package:flutter/material.dart';
 
 class DropDownFilter extends StatefulWidget {
-  const DropDownFilter({super.key, required this.title, required this.items, this.onChanged, required this.reset});
+  const DropDownFilter({super.key, required this.title, required this.items, this.onChanged, required this.reset, this.isExpanded = true});
   final String title;
   final List<dynamic> items;
   final Function(dynamic)? onChanged;
   final bool reset;
+  final bool isExpanded;
 
   @override
   State<DropDownFilter> createState() => _DropDownFilterState();
@@ -39,12 +40,12 @@ class _DropDownFilterState extends State<DropDownFilter> {
             borderRadius: BorderRadius.circular(8),
             border: Border.all(color: onContainerColor),
           ),
-          width: MediaQuery.of(context).size.width * 0.3,
+          width: widget.isExpanded ? MediaQuery.of(context).size.width * 0.3 : null,
           padding: const EdgeInsets.symmetric(horizontal: 12),
           child: DropdownButtonHideUnderline(
             child: DropdownButton<dynamic>(
               borderRadius: BorderRadius.circular(8),
-              isExpanded: true,
+              isExpanded: widget.isExpanded,
               value: widget.items[selectedIndex],
               items: widget.items.map((item) {
                 return DropdownMenuItem<dynamic>(

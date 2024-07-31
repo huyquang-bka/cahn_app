@@ -1,14 +1,14 @@
 class Event {
-  int deviceId;
-  String image;
+  int? deviceId;
+  String? image;
   String? video;
   String? fullname;
   String? gender;
   int? age;
   bool? isEmployee;
-  int isEmployeeOther;
+  int? isEmployeeOther;
   String? faceTerminalName;
-  String areaStr;
+  String? areaStr;
   String accessDateStr;
   String? personCode;
   String typeStr;

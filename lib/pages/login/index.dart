@@ -1,7 +1,7 @@
 import 'dart:convert';
+import 'package:cahn_app/helpers/helper_function.dart';
 import 'package:cahn_app/models/auth.dart';
 import 'package:cahn_app/models/config.dart';
-import 'package:flutter/services.dart';
 import '../../configs/api_route.dart';
 import '../../configs/config.dart';
 import '../../helpers/helpers_builder.dart';
@@ -19,21 +19,16 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool _passwordVisible = false;
-  late Config config;
+  Config? config;
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _loadConfig();
+    loadConfig().then((value) => config = value);
   }
 
-  void _loadConfig() async {
-    //set config to shared preferences
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    config = Config.fromString(prefs.getString('config'));
-  }
 
   void _onVisibilityChanged() {
     setState(() {
@@ -59,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
       showAlertMessage(context: context, message: 'Please fill in all fields');
       return;
     } 
-    String urlAuth = '${config.baseUrl}$uriAuth';
+    String urlAuth = '${config!.baseUrl}$uriAuth';
     Map<String, String> payload = bodyAuth;
     payload["username"] = _usernameController.text;
     payload["password"] = _passwordController.text;

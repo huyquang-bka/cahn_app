@@ -4,11 +4,11 @@ import 'package:cahn_app/configs/theme.dart';
 import 'package:cahn_app/models/config.dart';
 import 'package:cahn_app/models/event.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class EventField extends StatefulWidget {
-  const EventField({super.key, required this.events});
+  const EventField({super.key, required this.events, required this.fromIndex});
   final List<Event> events;
+  final int fromIndex;
 
   @override
   State<EventField> createState() => _EventFieldState();
@@ -20,18 +20,8 @@ class _EventFieldState extends State<EventField> {
   @override
   void initState() {
     super.initState();
-    loadConfig();
   }
 
-  void loadConfig() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? configPref = prefs.getString('config');
-    if (configPref != null) {
-      setState(() {
-        config = Config.fromString(configPref);
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,14 +32,16 @@ class _EventFieldState extends State<EventField> {
         color: containerColor,
         borderRadius: BorderRadius.circular(8),
       ),
-      child: widget.events.isEmpty
-          ? const Center(child: CircularProgressIndicator())
-          : Column(
-              children: [
-                for (int i = 0; i < widget.events.length; i++)
-                  eventCard(i, widget.events[i]),
-              ],
-            ),
+      child: widget.events.isEmpty ?
+      const Center(
+        child: Text("Không có sự kiện nào"),
+      ) :
+      ListView.builder(
+        itemCount: widget.events.length,
+        itemBuilder: (context, index) {
+          return eventCard(widget.fromIndex + index + 1, widget.events[index]);
+        },
+      ),
     );
   }
 

@@ -14,7 +14,7 @@ class CustomDateTimePicker extends StatefulWidget {
 
 class _CustomDateTimePickerState extends State<CustomDateTimePicker> {
   String? selectedDate;
-  final DateFormat formatter = DateFormat('HH:mm:ss dd/MM/yyyy');
+  final DateFormat formatter = DateFormat('yyyy-MM-dd HH:mm:ss');
 
   void onDateChanged(DateTime dateTime) {
     setState(() {
