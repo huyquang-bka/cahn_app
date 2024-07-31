@@ -36,7 +36,6 @@ class _CameraViewState extends State<CameraView> {
     super.initState();
     setupCamera();
     DartVLC.initialize();
-    player = Player(id: widget.cameraId ?? 0);
     _initPlayer();
   }
 
