@@ -21,45 +21,37 @@ class CameraView extends StatefulWidget {
 class _CameraViewState extends State<CameraView> {
   late Player player;
   Camera currentCamera = Camera();
+
   void onChangeCamera(dynamic camera) {
-    if (camera is Camera)
-    {
-      currentCamera = camera;
-      _initPlayer();
-      print("change camera: ${currentCamera.toJson()}");
-      widget.changeNumCamera(widget.index, currentCamera.id ?? 0);
-      if (currentCamera.rtspLink != null)
-      {
-        player.dispose();
-      }
-    }
-  }
-  
-  @override
-  void initState() {
-    super.initState();
-    setupCamera();
-    DartVLC.initialize();
-    player = Player(id: widget.index);
-    if (currentCamera.rtspLink != null)
-    {
-      _initPlayer();
+    if (camera is Camera) {
+      setState(() {
+        currentCamera = camera;
+        _initPlayer();
+        print("change camera: ${currentCamera.toJson()}");
+        widget.changeNumCamera(widget.index, currentCamera.id ?? 0);
+      });
     }
   }
 
+  @override
+  void initState() {
+    super.initState();
+    DartVLC.initialize();
+    player = Player(id: widget.index);
+    setupCamera();
+      _initPlayer();
+  }
+
   void setupCamera() {
-    if (widget.cameraId != null)
-    {
-      currentCamera = widget.cameras.firstWhere((element) => element.id == widget.cameraId);
+    if (widget.cameraId != null) {
+      currentCamera = widget.cameras.firstWhere((element) => element.id == widget.cameraId, orElse: () => Camera());
     }
   }
 
   void _initPlayer() {
-    print("init player: ${currentCamera.rtspLink}");
-    setState(() {
-      player = Player(id: widget.index);
-      player.open(Media.network(currentCamera.rtspLink));
-    });
+    if (currentCamera.rtspLink != null) {
+      player.open(Media.network(currentCamera.rtspLink!), autoStart: true);
+    }
   }
 
   @override
@@ -76,50 +68,51 @@ class _CameraViewState extends State<CameraView> {
         color: containerColor,
         borderRadius: BorderRadius.circular(8),
       ),
-      // width: double.infinity,
-      // height: double.infinity,
       padding: const EdgeInsets.all(defaultPadding),
       child: Column(
         children: [
-          //title
+          // title
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              DropDownFilter(title: "Camera", items: widget.cameras, reset: false, onChanged: onChangeCamera, isExpanded: false),
+              DropDownFilter(
+                title: "Camera",
+                items: widget.cameras,
+                reset: false,
+                onChanged: onChangeCamera,
+                isExpanded: false,
+              ),
             ],
           ),
           const SizedBox(height: defaultPadding),
-          //camera view
+          // camera view
           Expanded(
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(color: onContainerColor),
               ),
-              child: AspectRatio(
-                aspectRatio: 16 / 9,
-                child: PlayerWidget(player: player),
-              ),
+              child: PlayerWidget(player: player),
             ),
           ),
           const SizedBox(height: defaultPadding),
-          //button control
+          // button control
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              //button play
+              // button play
               IconButton(
-                onPressed: () {},
+                onPressed: () => player.play(),
                 icon: const Icon(Icons.play_arrow, color: onContainerColor),
               ),
               // button stop
               IconButton(
-                onPressed: () {},
+                onPressed: () => player.stop(),
                 icon: const Icon(Icons.stop, color: onContainerColor),
               ),
               // button reload
               IconButton(
-                onPressed: () {},
+                onPressed: () => _initPlayer(),
                 icon: const Icon(Icons.refresh, color: onContainerColor),
               ),
             ],
