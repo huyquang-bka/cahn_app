@@ -19,7 +19,7 @@ class CameraView extends StatefulWidget {
 }
 
 class _CameraViewState extends State<CameraView> {
-  Player? player;
+  Player player = Player(id: 0);
   Camera currentCamera = Camera();
   void onChangeCamera(dynamic camera) {
     if (camera is Camera)
@@ -51,7 +51,7 @@ class _CameraViewState extends State<CameraView> {
 
   void _initPlayer() {
     player = Player(id: currentCamera.id ?? 0);
-    player!.open(Media.network(currentCamera.rtspLink));
+    player.open(Media.network(currentCamera.rtspLink));
   }
 
   @override
