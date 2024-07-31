@@ -36,8 +36,10 @@ class _CameraViewState extends State<CameraView> {
     super.initState();
     setupCamera();
     DartVLC.initialize();
-    player = Player(id: widget.cameraId ?? 0);
-    _initPlayer();
+    if (currentCamera.rtspLink != null)
+    {
+      _initPlayer();
+    }
   }
 
   void setupCamera() {
@@ -48,7 +50,7 @@ class _CameraViewState extends State<CameraView> {
   }
 
   void _initPlayer() {
-    player = Player(id: widget.cameraId ?? 0);
+    player = Player(id: currentCamera.id ?? 0);
     player.open(Media.network(currentCamera.rtspLink));
   }
 
