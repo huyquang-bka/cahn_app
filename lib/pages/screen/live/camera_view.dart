@@ -19,6 +19,7 @@ class CameraView extends StatefulWidget {
 }
 
 class _CameraViewState extends State<CameraView> {
+  int seletectedIndex = 0;
   late Player player;
   Camera currentCamera = Camera();
 
@@ -38,18 +39,37 @@ class _CameraViewState extends State<CameraView> {
     DartVLC.initialize();
     player = Player(id: widget.index);
     setupCamera();
-      _initPlayer();
+    _initPlayer();
   }
 
   void setupCamera() {
     if (widget.cameraId != null) {
       currentCamera = widget.cameras.firstWhere((element) => element.id == widget.cameraId, orElse: () => Camera());
+        // set selected index and > 0
+        for (int i = 0; i < widget.cameras.length; i++) {
+          if (widget.cameras[i].id == widget.cameraId) {
+            setState(() {
+              seletectedIndex = i;
+            });
+            print("seletectedIndex: $seletectedIndex");
+            break;
+          }
+        }
     }
   }
 
   void _initPlayer() {
     if (currentCamera.rtspLink != null) {
       player.open(Media.network(currentCamera.rtspLink!), autoStart: true);
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant CameraView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.cameraId != widget.cameraId) {
+      setupCamera();
+      _initPlayer();
     }
   }
 
@@ -80,6 +100,7 @@ class _CameraViewState extends State<CameraView> {
                 reset: false,
                 onChanged: onChangeCamera,
                 isExpanded: false,
+                selectedIndex: seletectedIndex,
               ),
             ],
           ),

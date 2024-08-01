@@ -1,6 +1,1 @@
-{
-    "websocketUrl": "ws://192.168.1.195:6299",
-    "baseUrl": "http://192.168.1.210:42013",
-    "listCameraId": []
-}
-  
+{"websocketUrl":"ws://192.168.1.195:6299","baseUrl":"http://192.168.1.210:42013","listCameraId":[29]}

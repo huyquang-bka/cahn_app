@@ -2,12 +2,13 @@ import 'package:cahn_app/configs/theme.dart';
 import 'package:flutter/material.dart';
 
 class DropDownFilter extends StatefulWidget {
-  const DropDownFilter({super.key, required this.title, required this.items, this.onChanged, required this.reset, this.isExpanded = true});
+  DropDownFilter({super.key, required this.title, required this.items, this.onChanged, required this.reset, this.isExpanded = true, this.selectedIndex = 0});
   final String title;
   final List<dynamic> items;
   final Function(dynamic)? onChanged;
   final bool reset;
   final bool isExpanded;
+  int selectedIndex;
 
   @override
   State<DropDownFilter> createState() => _DropDownFilterState();
@@ -15,6 +16,12 @@ class DropDownFilter extends StatefulWidget {
 
 class _DropDownFilterState extends State<DropDownFilter> {
   int selectedIndex = 0;
+  
+  @override
+  void initState() {
+    super.initState();
+    selectedIndex = widget.selectedIndex;
+  }
 
   @override
   void didUpdateWidget(DropDownFilter oldWidget) {

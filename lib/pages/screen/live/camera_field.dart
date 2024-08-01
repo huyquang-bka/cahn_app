@@ -44,19 +44,40 @@ class _CameraFieldState extends State<CameraField> {
   }
 
   void _initialize() {
-    config = Config.fromJson(config.toJson());
-    //copy config from widget to local
     setState(() {
+      config = Config.fromJson(widget.config.toJson());
+      print("listCameraId: ${config.listCameraId}");
       currentSelected = config.listCameraId.length <= 1 ? 1 : 4;
     });
   }
 
-  void onChangeCamera(int index, int cameraId) {
+  void onChangeCamera(int index, int? cameraId) {
     print("index: $index, cameraId: $cameraId");
+    if (cameraId == null)
+    {
+      return;
+    }
+    if (index < config.listCameraId.length)
+    {
+      config.listCameraId[index] = cameraId;
+    }
+    else
+    {
+      config.listCameraId.add(cameraId);
+    }
   }
 
   void onSavePressed() {
-    //save config to server
+    config.saveConfig();
+  }
+
+  @override
+  void didUpdateWidget(covariant CameraField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.config != widget.config)
+    {
+      _initialize();
+    }
   }
 
 
@@ -97,8 +118,7 @@ class _CameraFieldState extends State<CameraField> {
             // button save
             IconButton(
               icon: const Icon(Icons.save),
-              onPressed: () {
-              },
+              onPressed: onSavePressed,
             ),
           ],
         ),
@@ -112,6 +132,8 @@ class _CameraFieldState extends State<CameraField> {
                   children: List.generate(rowCol[1], (index2) {
                     int indexCamera = index1 * rowCol[1] + index2;
                     int? cameraId = config.listCameraId.length > indexCamera ? config.listCameraId[indexCamera] : null;
+                    onChangeCamera(indexCamera, cameraId);
+                    print("indexCamera: $indexCamera, cameraId: $cameraId");
                     return Expanded(
                       flex: 1,
                       child: CameraView(index: indexCamera, cameraId: cameraId, areas: widget.areas, cameras: widget.cameras, changeNumCamera: onChangeCamera),

@@ -20,8 +20,6 @@ class _LiveViewScreenState extends State<LiveViewScreen> {
   List<Area> areas = [Area(text: "")];
   List<Camera> cameras = [Camera(text: "")];
 
-  final PageStorageBucket bucket = PageStorageBucket();
-
   @override
   void initState() {
     super.initState();
@@ -30,7 +28,9 @@ class _LiveViewScreenState extends State<LiveViewScreen> {
 
   Future<void> _initialize() async {
     await loadConfig().then((value) {
-      config = value;
+      setState(() {
+        config = value;
+      });
     });
     await loadAreaAndCamera();
   }
@@ -46,22 +46,19 @@ class _LiveViewScreenState extends State<LiveViewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return PageStorage(
-      bucket: bucket,
-      child: Row(
-        children: [
-          // camera field
-          Expanded(
-            flex: 4,
-            child: CameraField(cameras: cameras, areas: areas, client: client, config: config),
-            ),
-          //event live field
-          Expanded(
-            flex: 1,
-            child: EventView(cameras: cameras, config: config),
-            )
-        ],
-      ),
+    return Row(
+      children: [
+        // camera field
+        Expanded(
+          flex: 4,
+          child: CameraField(cameras: cameras, areas: areas, client: client, config: config),
+          ),
+        //event live field
+        Expanded(
+          flex: 1,
+          child: EventView(cameras: cameras, config: config),
+          )
+      ],
     );
   }
 } 

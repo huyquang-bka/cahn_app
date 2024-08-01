@@ -1,4 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
+
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Config {
   String websocketUrl;
@@ -29,5 +32,14 @@ class Config {
 
   String encodeToString() {
     return jsonEncode(toJson());
+  }
+
+  Future<void> saveConfig() async{
+    // Save config to file
+    File file = File('assets/configs/config.json');
+    file.writeAsStringSync(encodeToString());
+    // Save config to shared preferences
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('config', encodeToString());
   }
 }
