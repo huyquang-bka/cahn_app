@@ -18,8 +18,8 @@ class CameraField extends StatefulWidget {
 }
 
 class _CameraFieldState extends State<CameraField> {
+  late Config config;
   int currentSelected = 1;
-  List<Camera> listCamera = [];
 
   List<int> getRowCol(int numCamera) {
     if (numCamera == 2)
@@ -44,20 +44,19 @@ class _CameraFieldState extends State<CameraField> {
   }
 
   void _initialize() {
+    config = Config.fromJson(config.toJson());
     //copy config from widget to local
     setState(() {
-      currentSelected = widget.config.listCameraId.length <= 1 ? 1 : 4;
+      currentSelected = config.listCameraId.length <= 1 ? 1 : 4;
     });
   }
 
   void onChangeCamera(int index, int cameraId) {
     print("index: $index, cameraId: $cameraId");
-    if (listCamera.length > index) {
-      listCamera[index] = widget.cameras.firstWhere((element) => element.id == cameraId, orElse: () => Camera());
-    }
-    else {
-      listCamera.add(widget.cameras.firstWhere((element) => element.id == cameraId, orElse: () => Camera()));
-    }
+  }
+
+  void onSavePressed() {
+    //save config to server
   }
 
 
@@ -112,7 +111,7 @@ class _CameraFieldState extends State<CameraField> {
                 child: Row(
                   children: List.generate(rowCol[1], (index2) {
                     int indexCamera = index1 * rowCol[1] + index2;
-                    int? cameraId = widget.config.listCameraId.length > indexCamera ? widget.config.listCameraId[indexCamera] : null;
+                    int? cameraId = config.listCameraId.length > indexCamera ? config.listCameraId[indexCamera] : null;
                     return Expanded(
                       flex: 1,
                       child: CameraView(index: indexCamera, cameraId: cameraId, areas: widget.areas, cameras: widget.cameras, changeNumCamera: onChangeCamera),
