@@ -99,25 +99,25 @@ class _CameraFieldState extends State<CameraField> {
           ],
         ),
         // camera field
-        // Expanded(
-        //   child: Column(
-        //     children: List.generate(rowCol[0], (index1) {
-        //       return Expanded(
-        //         flex: 1,
-        //         child: Row(
-        //           children: List.generate(rowCol[1], (index2) {
-        //             int indexCamera = index1 * rowCol[1] + index2;
-        //             int? cameraId = config.listCameraId.length > indexCamera ? config.listCameraId[indexCamera] : null;
-        //             return Expanded(
-        //               flex: 1,
-        //               child: CameraView(index: indexCamera, cameraId: cameraId, areas: widget.areas, cameras: widget.cameras, changeNumCamera: onChangeCamera),
-        //             );
-        //           }),
-        //         ),
-        //       );
-        //     }),
-        //   ),
-        // ),
+        Expanded(
+          child: Column(
+            children: List.generate(rowCol[0], (index1) {
+              return Expanded(
+                flex: 1,
+                child: Row(
+                  children: List.generate(rowCol[1], (index2) {
+                    int indexCamera = index1 * rowCol[1] + index2;
+                    int? cameraId = config.listCameraId.length > indexCamera ? config.listCameraId[indexCamera] : null;
+                    return Expanded(
+                      flex: 1,
+                      child: CameraView(index: indexCamera, cameraId: cameraId, areas: widget.areas, cameras: widget.cameras, changeNumCamera: onChangeCamera),
+                    );
+                  }),
+                ),
+              );
+            }),
+          ),
+        ),
       ],
     );
   }
