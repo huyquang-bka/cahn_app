@@ -39,10 +39,15 @@ class _EventViewState extends State<EventView> {
       final String host = widget.config.websocketUrl;
       socket = WebSocket(Uri.parse(host), backoff: backoff);
       socket.messages.listen((message) {
-        _handleSocketMessage(message);
+        if (mounted) {
+          _handleSocketMessage(message);
+        }
       });
       socket.connection.listen((event) {
-        print('Socket connected to server: $host with event: $event');
+        if (mounted)
+        {
+          print('Socket connected to server: $host with event: $event');
+        }
       });
     } catch (e) {
       print("Error loading socket: $e");
@@ -50,6 +55,7 @@ class _EventViewState extends State<EventView> {
   }
 
   void _handleSocketMessage(String message) {
+    if (!mounted) return;
     final jsonMessage = jsonDecode(message);
     // print("Socket message: $jsonMessage");
     String? cameraName = widget.cameras
@@ -67,6 +73,12 @@ class _EventViewState extends State<EventView> {
         events.removeRange(maxEvents, events.length);
       }
     });
+  }
+
+  @override
+  void dispose() {
+    socket.close();
+    super.dispose();
   }
 
   @override
