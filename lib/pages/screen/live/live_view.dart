@@ -1,3 +1,8 @@
+import 'package:cahn_app/helpers/helper_function.dart';
+import 'package:cahn_app/models/area.dart';
+import 'package:cahn_app/models/camera.dart';
+import 'package:cahn_app/models/config.dart';
+import 'package:cahn_app/networks/http.dart';
 import 'package:cahn_app/pages/screen/live/camera_field.dart';
 import 'package:cahn_app/pages/screen/live/event_view.dart';
 import 'package:flutter/material.dart';
@@ -10,11 +15,29 @@ class LiveViewScreen extends StatefulWidget {
 }
 
 class _LiveViewScreenState extends State<LiveViewScreen> {
-  int numCamera = 1;
+  CustomHttpClient client = CustomHttpClient();
+  Config config = Config();
+  List<Area> areas = [Area(text: "")];
+  List<Camera> cameras = [Camera(text: "")];
 
-  void changeNumCamera(int numCameraSet) {
+  @override
+  void initState() {
+    super.initState();
+    _initialize();
+  }
+
+  Future<void> _initialize() async {
+    await loadConfig().then((value) {
+      config = value;
+    });
+    await loadAreaAndCamera();
+  }
+
+  Future<void> loadAreaAndCamera() async {
+    List<dynamic> results = await fetchCameraAndArea(client, config);
     setState(() {
-      numCamera = numCameraSet;
+      areas.addAll(results[0]);
+      cameras.addAll(results[1]);
     });
   }
 
@@ -23,14 +46,14 @@ class _LiveViewScreenState extends State<LiveViewScreen> {
     return Row(
       children: [
         // camera field
-        const Expanded(
-          flex: 5,
-          child: CameraField(),
+        Expanded(
+          flex: 4,
+          child: CameraField(cameras: cameras, areas: areas, client: client, config: config),
           ),
         //event live field
         Expanded(
           flex: 1,
-          child: EventView(changeNumCamera: changeNumCamera),
+          child: EventView(cameras: cameras, config: config),
           )
       ],
     );

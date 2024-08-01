@@ -27,7 +27,6 @@ class _CameraViewState extends State<CameraView> {
       setState(() {
         currentCamera = camera;
         _initPlayer();
-        print("change camera: ${currentCamera.toJson()}");
         widget.changeNumCamera(widget.index, currentCamera.id ?? 0);
       });
     }

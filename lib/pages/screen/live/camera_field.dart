@@ -1,5 +1,4 @@
 import 'package:cahn_app/configs/config.dart';
-import 'package:cahn_app/helpers/helper_function.dart';
 import 'package:cahn_app/models/area.dart';
 import 'package:cahn_app/models/camera.dart';
 import 'package:cahn_app/models/config.dart';
@@ -8,19 +7,20 @@ import 'package:cahn_app/pages/screen/live/camera_view.dart';
 import 'package:flutter/material.dart';
 
 class CameraField extends StatefulWidget {
-  const CameraField({super.key});
+  const CameraField({super.key, required this.cameras, required this.areas, required this.client, required this.config});
+  final CustomHttpClient client;
+  final Config config;
+  final List<Camera> cameras;
+  final List<Area> areas;
 
   @override
   State<CameraField> createState() => _CameraFieldState();
 }
 
 class _CameraFieldState extends State<CameraField> {
-  CustomHttpClient client = CustomHttpClient();
-  Config config = Config();
+  late Config config = widget.config;
   int currentSelected = 1;
 
-  List<Area> areas = [Area(text: "")];
-  List<Camera> cameras = [Camera(text: "")];
 
   List<int> getRowCol(int numCamera) {
     if (numCamera == 2)
@@ -44,29 +44,17 @@ class _CameraFieldState extends State<CameraField> {
     _initialize();
   }
 
-  Future<void> _initialize() async {
-    await loadConfig().then((value) {
-      config = value;
-      
+  void _initialize() {
       setState(() {
         currentSelected = config.listCameraId.length <= 1 ? 1 : 4;
       });
-    });
-    await loadAreaAndCamera();
-  }
-
-  Future<void> loadAreaAndCamera() async {
-    List<dynamic> results = await fetchCameraAndArea(client, config);
-    setState(() {
-      areas.addAll(results[0]);
-      cameras.addAll(results[1]);
-    });
   }
 
   void onChangeCamera(int index, int cameraId) {
     print("index: $index, cameraId: $cameraId");
     config.listCameraId.length > index ? config.listCameraId[index] = cameraId : config.listCameraId.add(cameraId);
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -111,25 +99,25 @@ class _CameraFieldState extends State<CameraField> {
           ],
         ),
         // camera field
-        Expanded(
-          child: Column(
-            children: List.generate(rowCol[0], (index1) {
-              return Expanded(
-                flex: 1,
-                child: Row(
-                  children: List.generate(rowCol[1], (index2) {
-                    int indexCamera = index1 * rowCol[1] + index2;
-                    int? cameraId = config.listCameraId.length > indexCamera ? config.listCameraId[indexCamera] : null;
-                    return Expanded(
-                      flex: 1,
-                      child: CameraView(index: indexCamera, cameraId: cameraId, areas: areas, cameras: cameras, changeNumCamera: onChangeCamera),
-                    );
-                  }),
-                ),
-              );
-            }),
-          ),
-        ),
+        // Expanded(
+        //   child: Column(
+        //     children: List.generate(rowCol[0], (index1) {
+        //       return Expanded(
+        //         flex: 1,
+        //         child: Row(
+        //           children: List.generate(rowCol[1], (index2) {
+        //             int indexCamera = index1 * rowCol[1] + index2;
+        //             int? cameraId = config.listCameraId.length > indexCamera ? config.listCameraId[indexCamera] : null;
+        //             return Expanded(
+        //               flex: 1,
+        //               child: CameraView(index: indexCamera, cameraId: cameraId, areas: widget.areas, cameras: widget.cameras, changeNumCamera: onChangeCamera),
+        //             );
+        //           }),
+        //         ),
+        //       );
+        //     }),
+        //   ),
+        // ),
       ],
     );
   }

@@ -53,7 +53,6 @@ Future<Config> loadConfig() async {
     //set config to shared preferences
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? configString = prefs.getString('config');
-    print("configString: $configString");
     Config loadedConfig = Config.fromString(configString);
     return loadedConfig;
   }
